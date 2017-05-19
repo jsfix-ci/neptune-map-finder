@@ -1,144 +1,289 @@
-[![npm version](https://badge.fury.io/js/google-map-react.svg)](http://badge.fury.io/js/google-map-react)
-[![Build Status](https://travis-ci.org/istarkov/google-map-react.svg?branch=master)](https://travis-ci.org/istarkov/google-map-react)
+# react-google-maps
+> React.js Google Maps integration component
 
-`google-map-react` is a component written over a small set of the [Google Maps API](https://developers.google.com/maps/). It allows you to render any React component on the Google Map. It is fully isomorphic and can render on a server. Additionally, it can render map components in the browser even if the Google Maps API is not loaded. It uses an internal, tweakable hover algorithm - every object on the map can be hovered.
+[![Version][npm-image]][npm-url] [![Travis CI][travis-image]][travis-url] [![Quality][codeclimate-image]][codeclimate-url] [![Coverage][codeclimate-coverage-image]][codeclimate-coverage-url] [![Dependencies][gemnasium-image]][gemnasium-url] [![Gitter][gitter-image]][gitter-url]
 
-It allows you to create interfaces like this [example](http://istarkov.github.io/google-map-react/map/main) *(You can scroll the table, zoom/move the map, hover/click on markers, and click on table rows)*
 
-## Features
+## Getting Help
 
-### Works with your Components
+**For support or usage questions like “how do I do X with React-Google-Maps” and “my code doesn't work”, please search and ask on StackOverflow [with a google-maps tag](https://stackoverflow.com/questions/tagged/google-maps?sort=votes&pageSize=50) or [use react-google-maps as a keyword](https://stackoverflow.com/search?q=react-google-maps) first.**
 
-Instead of the ugly Google Maps markers, balloons and other map components, you can render your cool animated react components on the map.
+We ask you to do this because StackOverflow has a much better job at keeping popular questions visible. Unfortunately good answers get lost and outdated on GitHub.
 
-### Isomorphic Rendering
+Some questions take a long time to get an answer. **If your question gets closed or you don't get a reply on StackOverflow for longer than a few days,** we encourage you to post an issue linking to your question. We will close your issue but this will give people watching the repo an opportunity to see your question and reply to it on StackOverflow if they know the answer.
 
-It renders on the server. *(Welcome search engines)* *(you can disable javascript in browser dev tools, and reload any example page to see how it works)*
+Please be considerate when doing this as this is not the primary purpose of the issue tracker.
 
-### Component Positions Calculated Independently of Google Maps API
 
-It renders components on the map before (and even without) the Google Maps API loaded.
+## Versions
 
-### Google Maps API Loads on Demand
+* For `React >= 15.5`, use [next](https://github.com/tomchentw/react-google-maps/releases/tag/v7.0.0) tag on npm
+* For `React < 15.5`, use [latest](https://github.com/tomchentw/react-google-maps/releases/tag/v6.3.0) tag on npm
 
-There is no need to place a `<script src=` tag at top of page. The Google Maps API loads upon the first usage of the `GoogleMapReact` component.
 
-### Internal Hover Algorithm
+## Call for maintainers
 
-Now every object on the map can be hovered (however, you can still use css hover selectors if you want). If you try zooming out here [example](http://istarkov.github.io/google-map-react/map/main), you will still be able to hover on almost every map marker.
+As the author ([tomchentw][tomchentw]) currently doesn't actively use this module, he's looking for awesome contributors to help and keep the community healthy. Please don't hesitate to [contact him][tomchentw] directly. See [#266][call-for-maintainers] for more information.
 
-## What's it Look Like?
 
-In the simple case you just need to add `lat` `lng` props to any child of `GoogleMapReact` component.
+## Documentation
 
-[See it in action at jsbin](https://jsbin.com/gaxapezowo/1/edit?js,output)
+Basically just a simple wrapper around [Google Maps Javascript API][Google Maps Javascript API]. Also check out the [demo][demo] app and it's source under [src/app][src_app] folder.
 
-```javascript
-import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
+**Note**: this doc is under development for [v6.0.0](https://github.com/tomchentw/react-google-maps/issues/318). Find docs for [v5.x][docs_v5] and [v4.x][docs_v4] with the git tags.
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+### withGoogleMap
 
-class SimpleMap extends Component {
-  static defaultProps = {
-    center: {lat: 59.95, lng: 30.33},
-    zoom: 11
-  };
+```jsx
+import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
-  render() {
-    return (
-      <GoogleMapReact
-        defaultCenter={this.props.center}
-        defaultZoom={this.props.zoom}
+// Wrap all `react-google-maps` components with `withGoogleMap` HOC
+// and name it GettingStartedGoogleMap
+const GettingStartedGoogleMap = withGoogleMap(props => (
+  <GoogleMap
+    ref={props.onMapLoad}
+    defaultZoom={3}
+    defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
+    onClick={props.onMapClick}
+  >
+    {props.markers.map((marker, index) => (
+      <Marker
+        {...marker}
+        onRightClick={() => props.onMarkerRightClick(index)}
+      />
+    ))}
+  </GoogleMap>
+));
+// Then, render it:
+render(
+  <GettingStartedGoogleMap
+    containerElement={
+      <div style={{ height: `100%` }} />
+    }
+    mapElement={
+      <div style={{ height: `100%` }} />
+    }
+    onMapLoad={_.noop}
+    onMapClick={_.noop}
+    markers={markers}
+    onMarkerRightClick={_.noop}
+  />,
+  document.getElementById('root')
+);
+```
+
+### GoogleMap
+
+```jsx
+<GoogleMap
+  onClick={_.noop}
+  onRightClick={_.noop}
+  onDragStart={_.noop}
+/>
+```
+
+### Marker
+
+```jsx
+<Marker
+  onClick={_.noop}
+  onRightClick={_.noop}
+  onDragStart={_.noop}
+/>
+```
+
+### Circle
+
+```jsx
+<Circle
+  onClick={_.noop}
+  onRightClick={_.noop}
+  onDragStart={_.noop}
+/>
+```
+
+### Rectangle
+
+```jsx
+<Rectangle
+  onClick={_.noop}
+  onRightClick={_.noop}
+  onDragStart={_.noop}
+/>
+```
+
+### Polyline
+
+```jsx
+<Polyline
+  onClick={_.noop}
+  onRightClick={_.noop}
+  onDragStart={_.noop}
+/>
+```
+
+### Polygon
+
+```jsx
+<Polygon
+  onClick={_.noop}
+  onRightClick={_.noop}
+  onDragStart={_.noop}
+/>
+```
+
+### KmlLayer
+
+```jsx
+<KmlLayer
+  onClick={_.noop}
+  onDefaultViewportChanged={_.noop}
+  onStatusChanged={_.noop}
+/>
+```
+
+### FusionTablesLayer
+
+```jsx
+<FusionTablesLayer
+  onClick={_.noop}
+/>
+```
+
+### InfoWindow
+
+```jsx
+<InfoWindow
+  onCloseClick={_.noop}
+  onDomReady={_.noop}
+  onZIndexChanged={_.noop}
+/>
+```
+
+### drawing/DrawingManager
+
+```jsx
+<DrawingManager
+  onCircleComplete={_.noop}
+  onOverlayComplete={_.noop}
+/>
+```
+
+### places/SearchBox
+
+```jsx
+<SearchBox
+  inputPlaceholder="Customized your placeholder"
+  inputStyle={INPUT_STYLE}
+/>
+```
+
+### addons/MarkerClusterer
+
+```jsx
+<MarkerClusterer
+  onClusteringBegin={_.noop}
+  onMouseOut={_.noop}
+/>
+```
+
+### addons/InfoBox
+
+```jsx
+<InfoBox
+  onCloseClick={_.noop}
+  onDomReady={_.noop}
+  onZIndexChanged={_.noop}
+/>
+```
+
+### async/withScriptjs
+
+```jsx
+import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import withScriptjs from "react-google-maps/lib/async/withScriptjs";
+
+// Wrap all `react-google-maps` components with `withGoogleMap` HOC
+// then wraps it into `withScriptjs` HOC
+// It loads Google Maps JavaScript API v3 for you asynchronously.
+// Name the component AsyncGettingStartedExampleGoogleMap
+const AsyncGettingStartedExampleGoogleMap = withScriptjs(
+  withGoogleMap(
+    props => (
+      <GoogleMap
+        ref={props.onMapLoad}
+        defaultZoom={3}
+        defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
+        onClick={props.onMapClick}
       >
-        <AnyReactComponent
-          lat={59.955413}
-          lng={30.337844}
-          text={'Kreyser Avrora'}
+        {props.markers.map(marker => (
+          <Marker
+            {...marker}
+            onRightClick={() => props.onMarkerRightClick(marker)}
+          />
+        ))}
+      </GoogleMap>
+    )
+  )
+);
+// Then, render it:
+render(
+  <AsyncGettingStartedExampleGoogleMap
+    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp"
+    loadingElement={
+      <div style={{ height: `100%` }}>
+        <FaSpinner
+          style={{
+            display: `block`,
+            width: `80px`,
+            height: `80px`,
+            margin: `150px auto`,
+            animation: `fa-spin 2s infinite linear`,
+          }}
         />
-      </GoogleMapReact>
-    );
-  }
-}
+      </div>
+    }
+    containerElement={
+      <div style={{ height: `100%` }} />
+    }
+    mapElement={
+      <div style={{ height: `100%` }} />
+    }
+    onMapLoad={_.noop}
+    onMapClick={_.noop}
+    markers={markers}
+    onMarkerRightClick={_.noop}
+  />,
+  document.getElementById('root')
+);
 ```
 
-## Installation
+## Changelog
 
-```
-npm install --save google-map-react
-```
-
-## Examples
-
-* Placing react components on the map:
-[simple](http://istarkov.github.io/google-map-react/map/simple/) ([source](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_simple/simple_map_page.jsx))
-
-* Custom map options:
-[example](http://istarkov.github.io/google-map-react/map/options/) ([source](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_options/options_map_page.jsx))
-
-* Hover effects:
-[simple hover](http://istarkov.github.io/google-map-react/map/simple_hover/) ([source](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_simple_hover/simple_hover_map_page.jsx));
-[distance hover](http://istarkov.github.io/google-map-react/map/distance_hover/) ([source](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_distance_hover/distance_hover_map_page.jsx))
-
-* GoogleMap events:
-[example](http://istarkov.github.io/google-map-react/map/events/) ([source](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_events/events_map_page.jsx))
-
-* Example project:
-[main](http://istarkov.github.io/google-map-react/map/main/) ([source](https://github.com/istarkov/google-map-react-examples/blob/master/web/flux/components/examples/x_main/main_map_block.jsx)); [balderdash](http://istarkov.github.io/google-map-react/map/balderdash/) (same source as main)
-
-* Clustering example (**new**)
-[google-map-clustering-example](http://istarkov.github.io/google-map-clustering-example/)
-
-* How to render thousands of markers (**new**)
-[google-map-thousands-markers](https://istarkov.github.io/google-map-thousands-markers/)
-
-* All api examples:
-[google-map-react-examples](https://github.com/istarkov/google-map-react-examples)
-
-* jsbin example
-[jsbin example](https://jsbin.com/roqutisoqu/1/edit?js,console,output)
-
-* webpackbin examples (**new**)
-[docs with webpackbin examples](./DOC.md) (In progress)
-
-* local develop example (new)
-[develop example](./develop)
-
-## Contribute
-
-To get a reloadable env, with map, clone this project and
-
-```shell
-npm install
-npm run start
-# open browser at localhost:4000
-```
-
-## API
-
-[API](./API.md)
-
-[NEW DOCS](./DOC.md) (In progress)
+The changelog is automatically generated via [conventional-changelog][conventional-changelog] and [can be found in project root](https://github.com/tomchentw/react-google-maps/blob/master/CHANGELOG.md) as well as npm tarball.
 
 
-## Thank you
 
-(*Really big thanks to [April Arcus](https://github.com/AprilArcus) for documentation fixes*)
+[npm-image]: https://img.shields.io/npm/v/react-google-maps.svg?style=flat-square
+[npm-url]: https://www.npmjs.org/package/react-google-maps
 
-(*thank you [Dan Abramov](http://gaearon.github.io/react-dnd/) for titles structure*)
+[travis-image]: https://img.shields.io/travis/tomchentw/react-google-maps.svg?style=flat-square
+[travis-url]: https://travis-ci.org/tomchentw/react-google-maps
+[codeclimate-image]: https://img.shields.io/codeclimate/github/tomchentw/react-google-maps.svg?style=flat-square
+[codeclimate-url]: https://codeclimate.com/github/tomchentw/react-google-maps
+[codeclimate-coverage-image]: https://img.shields.io/codeclimate/coverage/github/tomchentw/react-google-maps.svg?style=flat-square
+[codeclimate-coverage-url]: https://codeclimate.com/github/tomchentw/react-google-maps
+[gemnasium-image]: https://img.shields.io/gemnasium/tomchentw/react-google-maps.svg?style=flat-square
+[gemnasium-url]: https://gemnasium.com/tomchentw/react-google-maps
+[gitter-image]: https://badges.gitter.im/Join%20Chat.svg
+[gitter-url]: https://gitter.im/tomchentw/react-google-maps?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
-(*great thanks to [Vladimir Akimov](https://github.com/b2whats) he knows why*)
 
-## License
-
-MIT (http://www.opensource.org/licenses/mit-license.php)
-
-
-### bower
-
-We no longer intend to support Bower. Please stop using Bower. NPM works very well for front-end development, and you should use it instead. ((c)Dan Abramov)
-UMD AMD and other build are available under dist folder after `npm install`
-
-## Known Issues
-
-* Older browsers (http://caniuse.com/#feat=promises) will need a ES6 Promise polyfill in order to work.
+[tomchentw]: https://github.com/tomchentw
+[call-for-maintainers]: https://github.com/tomchentw/react-google-maps/issues/266
+[demo]: https://tomchentw.github.io/react-google-maps/
+[src_app]: https://github.com/tomchentw/react-google-maps/tree/master/src/app
+[Google Maps Javascript API]: https://developers.google.com/maps/documentation/javascript/
+[conventional-changelog]: https://github.com/ajoslin/conventional-changelog
+[docs_v5]: https://github.com/tomchentw/react-google-maps/tree/v5.1.0#documentation
+[docs_v4]: https://github.com/tomchentw/react-google-maps/tree/v4.11.0#documentation
