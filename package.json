@@ -23,7 +23,7 @@
     "widget",
     "component"
   ],
-  "author": "Vladimir Ignatov",
+  "author": "D Ignatov",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vlad-ignatov/react-numeric-input/issues"
