@@ -1,289 +1,151 @@
-# react-google-maps
-> React.js Google Maps integration component
+# <img align="right" src="http://vlad-ignatov.github.io/react-numeric-input/examples/v2.0.0/screenshot.png" width="123"/>React Numeric Input
 
-[![Version][npm-image]][npm-url] [![Travis CI][travis-image]][travis-url] [![Quality][codeclimate-image]][codeclimate-url] [![Coverage][codeclimate-coverage-image]][codeclimate-coverage-url] [![Dependencies][gemnasium-image]][gemnasium-url] [![Gitter][gitter-image]][gitter-url]
+[![Build Status](https://travis-ci.org/vlad-ignatov/react-numeric-input.svg?branch=master)](https://travis-ci.org/vlad-ignatov/react-numeric-input)
 
+Number input component that can replace the native number input which is not yet
+very well supported and where it is, it does not have the same appearance across
+the browsers. Additionally this component offers more flexible options and can
+be used for any values (differently formatted representations of the internal
+numeric value).
 
-## Getting Help
+[Live demo](http://vlad-ignatov.github.io/react-numeric-input/examples/v2.0.7/index.html)
 
-**For support or usage questions like “how do I do X with React-Google-Maps” and “my code doesn't work”, please search and ask on StackOverflow [with a google-maps tag](https://stackoverflow.com/questions/tagged/google-maps?sort=votes&pageSize=50) or [use react-google-maps as a keyword](https://stackoverflow.com/search?q=react-google-maps) first.**
-
-We ask you to do this because StackOverflow has a much better job at keeping popular questions visible. Unfortunately good answers get lost and outdated on GitHub.
-
-Some questions take a long time to get an answer. **If your question gets closed or you don't get a reply on StackOverflow for longer than a few days,** we encourage you to post an issue linking to your question. We will close your issue but this will give people watching the repo an opportunity to see your question and reply to it on StackOverflow if they know the answer.
-
-Please be considerate when doing this as this is not the primary purpose of the issue tracker.
-
-
-## Versions
-
-* For `React >= 15.5`, use [next](https://github.com/tomchentw/react-google-maps/releases/tag/v7.0.0) tag on npm
-* For `React < 15.5`, use [latest](https://github.com/tomchentw/react-google-maps/releases/tag/v6.3.0) tag on npm
-
-
-## Call for maintainers
-
-As the author ([tomchentw][tomchentw]) currently doesn't actively use this module, he's looking for awesome contributors to help and keep the community healthy. Please don't hesitate to [contact him][tomchentw] directly. See [#266][call-for-maintainers] for more information.
-
-
-## Documentation
-
-Basically just a simple wrapper around [Google Maps Javascript API][Google Maps Javascript API]. Also check out the [demo][demo] app and it's source under [src/app][src_app] folder.
-
-**Note**: this doc is under development for [v6.0.0](https://github.com/tomchentw/react-google-maps/issues/318). Find docs for [v5.x][docs_v5] and [v4.x][docs_v4] with the git tags.
-
-### withGoogleMap
-
-```jsx
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-
-// Wrap all `react-google-maps` components with `withGoogleMap` HOC
-// and name it GettingStartedGoogleMap
-const GettingStartedGoogleMap = withGoogleMap(props => (
-  <GoogleMap
-    ref={props.onMapLoad}
-    defaultZoom={3}
-    defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
-    onClick={props.onMapClick}
-  >
-    {props.markers.map((marker, index) => (
-      <Marker
-        {...marker}
-        onRightClick={() => props.onMarkerRightClick(index)}
-      />
-    ))}
-  </GoogleMap>
-));
-// Then, render it:
-render(
-  <GettingStartedGoogleMap
-    containerElement={
-      <div style={{ height: `100%` }} />
-    }
-    mapElement={
-      <div style={{ height: `100%` }} />
-    }
-    onMapLoad={_.noop}
-    onMapClick={_.noop}
-    markers={markers}
-    onMarkerRightClick={_.noop}
-  />,
-  document.getElementById('root')
-);
+## Installation
+```sh
+npm install react-numeric-input --save
+```
+Then in your scrips:
+```js
+// es6
+import NumericInput from 'react-numeric-input';
+// or es5
+var NumericInput = require('react-numeric-input');
 ```
 
-### GoogleMap
-
+## Usage
+##### Minimal Usage:
+This will behave exactly like `<input type="number">`. It will create an empty
+numeric input that starts changing from zero. The difference that this works on
+any browser and does have the same appearance on each browser.
 ```jsx
-<GoogleMap
-  onClick={_.noop}
-  onRightClick={_.noop}
-  onDragStart={_.noop}
-/>
+<NumericInput/>
+// or:
+<NumericInput className="form-control"/>
 ```
 
-### Marker
-
+##### Typical Usage
+Most of the time you will need to specify `min`, `max` and `value`:
 ```jsx
-<Marker
-  onClick={_.noop}
-  onRightClick={_.noop}
-  onDragStart={_.noop}
-/>
+<NumericInput min={0} max={100} value={50}/>
 ```
 
-### Circle
-
+#### Working with floats
+You can use `step` and `precision` props to make your input working with
+floating point numbers:
 ```jsx
-<Circle
-  onClick={_.noop}
-  onRightClick={_.noop}
-  onDragStart={_.noop}
-/>
+<NumericInput step={0.1} precision={2} value={50.3}/>
 ```
 
-### Rectangle
-
+#### Custom format
+By default the component displays the value number as is. However, you can
+provide your own `format` function that will be called with the numeric value
+and is expected to return the string that will be rendered in the input:
 ```jsx
-<Rectangle
-  onClick={_.noop}
-  onRightClick={_.noop}
-  onDragStart={_.noop}
-/>
+function myFormat(num) {
+    return num + '$';
+}
+<NumericInput precision={2} value={50.3} step={0.1} format={myFormat}/>
 ```
 
-### Polyline
+## Props
+Name         | Type                                | Default
+-------------|-------------------------------------|:-------:
+**value**    |`number` or `string`                 | `""` which converts to 0
+**min**      |`number`                             | `Number.MIN_SAFE_INTEGER`
+**max**      |`number`                             | `Number.MAX_SAFE_INTEGER`
+**step**     |`number`                             | 1
+**precision**|`number`                             | 0
+**parse**    |`function`                           | parseFloat
+**format**   |`function`                           | none
+**className**|`string`                             | none
+**disabled** |`boolean`                            | none
+**readOnly** |`boolean`                            | none
+**style**    |`object` or `false`                  | none
+**size**     |`number` or `string`                 | none
+**mobile**   |`true`, `false`, 'auto' or `function`|`auto`
 
-```jsx
-<Polyline
-  onClick={_.noop}
-  onRightClick={_.noop}
-  onDragStart={_.noop}
-/>
+Any other option is passed directly the input created by the component. Just
+don't forget to camelCase the attributes. For example `readonly` must be `readOnly`.
+See examples/index.html for examples.
+
+## Event Callbacks
+You can pass callback props like `onClick`, `onMouseOver` etc. and they will be
+attached to the input element and React will call them with `null` scope and the corresponding event. However, there are few special cases to be aware of:
+
+* `onChange`  - Called with `valueAsNumber` and `valueAsString`. The `valueAsNumber` represents the internal numeric value while `valueAsString` is the same as the input value and might be completely different from the numeric one if custom formatting is used.
+* `onInvalid` - Will be called with `errorMessage`, `valueAsNumber` and `valueAsString`.
+* `onValid`   - There is no corresponding event in browsers. It will be called when the component transitions from invalid to valid state with the same arguments as onChange: `valueAsNumber` and `valueAsString`.
+
+## Styling
+The component uses inline styles which you can customize. The `style` prop is not added
+directly to the component but instead it is a container for styles which you can overwrite.
+For example
+```xml
+<NumericInput style={{
+	input: {
+		color: 'red'
+	}
+}}>
+```
+You can modify the styles for everything including states like `:hover`, `:active` and
+`:disabled`. Take a look at the source to see what styles are supported. Also, the style is
+stored as static class property so that you can change it and affect all the components
+from your script. Example:
+```js
+import NumericInput from 'react-numeric-input';
+NumericInput.style.input.color = 'red';
 ```
 
-### Polygon
-
-```jsx
-<Polygon
-  onClick={_.noop}
-  onRightClick={_.noop}
-  onDragStart={_.noop}
-/>
+Finally, you can still use CSS if you want. Each component's root element has the
+`react-numeric-input` class so that it is easy to find these widgets on the page. However,
+keep in mind that because of the inline styles you might need to use `!important` for some
+rules unless you pass `style={false}` which will disable the inline styles and you will
+have to provide your own CSS styles for everything. Example:
+```css
+.react-numeric-input input {
+	color: red;
+}
 ```
 
-### KmlLayer
+## Keyboard navigation
+* You can use <kbd>⬆</kbd> and <kbd>⬇</kbd> arrow keys to increment/decrement the input value.
+* <kbd>Ctrl + ⬆</kbd> or <kbd>⌘ + ⬆</kbd> and <kbd>Ctrl + ⬇</kbd> or <kbd>⌘ + ⬇</kbd> to use smaller step (`step / 10`).
+  Note that this will only work if you have specified a `precision` option that supports it.
+* <kbd>Shift + ⬆</kbd> and <kbd>Shift + ⬇</kbd> to use bigger step (`step * 10`).
 
-```jsx
-<KmlLayer
-  onClick={_.noop}
-  onDefaultViewportChanged={_.noop}
-  onStatusChanged={_.noop}
-/>
+## Integration with external scripts
+This component aims to provide good integration not only with React but with any third party script
+that might want to work with it on the current page.
+
+### getValueAsNumber()
+The native number inputs have special property called `valueAsNumber`. It provides access to the
+value as number to be used by scripts. In this react component this becomes even more desirable as
+the display value might be formatted and have nothing in common with the underlying value meaning
+that one might need to call parse to find out what the numeric value is. For that reason this
+component exposes `getValueAsNumber()` method on the input element. Also keep in mind
+that this really returns a number (float) so it might be different from the displayed value. For
+example an input showing "12.30" will have `getValueAsNumber()` returning `12.3` and if the input
+is empty the result would be `0`.
+
+### setValue()
+An external script that does not "understand" React can still work with this component by reading
+the `getValueAsNumber()` or by calling the `setValue()` method exposed on the input element. Here is
+an example with jQuery:
+```js
+$('input[name="some-input"]')[0].setValue('123mph');
 ```
+Calling this method will invoke the component's `parse` method with the provided argument and then
+it will `setState` causing the usual re-rendering.
 
-### FusionTablesLayer
-
-```jsx
-<FusionTablesLayer
-  onClick={_.noop}
-/>
-```
-
-### InfoWindow
-
-```jsx
-<InfoWindow
-  onCloseClick={_.noop}
-  onDomReady={_.noop}
-  onZIndexChanged={_.noop}
-/>
-```
-
-### drawing/DrawingManager
-
-```jsx
-<DrawingManager
-  onCircleComplete={_.noop}
-  onOverlayComplete={_.noop}
-/>
-```
-
-### places/SearchBox
-
-```jsx
-<SearchBox
-  inputPlaceholder="Customized your placeholder"
-  inputStyle={INPUT_STYLE}
-/>
-```
-
-### addons/MarkerClusterer
-
-```jsx
-<MarkerClusterer
-  onClusteringBegin={_.noop}
-  onMouseOut={_.noop}
-/>
-```
-
-### addons/InfoBox
-
-```jsx
-<InfoBox
-  onCloseClick={_.noop}
-  onDomReady={_.noop}
-  onZIndexChanged={_.noop}
-/>
-```
-
-### async/withScriptjs
-
-```jsx
-import { withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-import withScriptjs from "react-google-maps/lib/async/withScriptjs";
-
-// Wrap all `react-google-maps` components with `withGoogleMap` HOC
-// then wraps it into `withScriptjs` HOC
-// It loads Google Maps JavaScript API v3 for you asynchronously.
-// Name the component AsyncGettingStartedExampleGoogleMap
-const AsyncGettingStartedExampleGoogleMap = withScriptjs(
-  withGoogleMap(
-    props => (
-      <GoogleMap
-        ref={props.onMapLoad}
-        defaultZoom={3}
-        defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
-        onClick={props.onMapClick}
-      >
-        {props.markers.map(marker => (
-          <Marker
-            {...marker}
-            onRightClick={() => props.onMarkerRightClick(marker)}
-          />
-        ))}
-      </GoogleMap>
-    )
-  )
-);
-// Then, render it:
-render(
-  <AsyncGettingStartedExampleGoogleMap
-    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp"
-    loadingElement={
-      <div style={{ height: `100%` }}>
-        <FaSpinner
-          style={{
-            display: `block`,
-            width: `80px`,
-            height: `80px`,
-            margin: `150px auto`,
-            animation: `fa-spin 2s infinite linear`,
-          }}
-        />
-      </div>
-    }
-    containerElement={
-      <div style={{ height: `100%` }} />
-    }
-    mapElement={
-      <div style={{ height: `100%` }} />
-    }
-    onMapLoad={_.noop}
-    onMapClick={_.noop}
-    markers={markers}
-    onMarkerRightClick={_.noop}
-  />,
-  document.getElementById('root')
-);
-```
-
-## Changelog
-
-The changelog is automatically generated via [conventional-changelog][conventional-changelog] and [can be found in project root](https://github.com/tomchentw/react-google-maps/blob/master/CHANGELOG.md) as well as npm tarball.
-
-
-
-[npm-image]: https://img.shields.io/npm/v/react-google-maps.svg?style=flat-square
-[npm-url]: https://www.npmjs.org/package/react-google-maps
-
-[travis-image]: https://img.shields.io/travis/tomchentw/react-google-maps.svg?style=flat-square
-[travis-url]: https://travis-ci.org/tomchentw/react-google-maps
-[codeclimate-image]: https://img.shields.io/codeclimate/github/tomchentw/react-google-maps.svg?style=flat-square
-[codeclimate-url]: https://codeclimate.com/github/tomchentw/react-google-maps
-[codeclimate-coverage-image]: https://img.shields.io/codeclimate/coverage/github/tomchentw/react-google-maps.svg?style=flat-square
-[codeclimate-coverage-url]: https://codeclimate.com/github/tomchentw/react-google-maps
-[gemnasium-image]: https://img.shields.io/gemnasium/tomchentw/react-google-maps.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/tomchentw/react-google-maps
-[gitter-image]: https://badges.gitter.im/Join%20Chat.svg
-[gitter-url]: https://gitter.im/tomchentw/react-google-maps?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-
-
-[tomchentw]: https://github.com/tomchentw
-[call-for-maintainers]: https://github.com/tomchentw/react-google-maps/issues/266
-[demo]: https://tomchentw.github.io/react-google-maps/
-[src_app]: https://github.com/tomchentw/react-google-maps/tree/master/src/app
-[Google Maps Javascript API]: https://developers.google.com/maps/documentation/javascript/
-[conventional-changelog]: https://github.com/ajoslin/conventional-changelog
-[docs_v5]: https://github.com/tomchentw/react-google-maps/tree/v5.1.0#documentation
-[docs_v4]: https://github.com/tomchentw/react-google-maps/tree/v4.11.0#documentation
+## License
+MIT
