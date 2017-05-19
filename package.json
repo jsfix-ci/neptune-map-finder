@@ -6,7 +6,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
-  "main": "src/index",
+  "main": "lib/index",
   "devDependencies": {
     "react-scripts": "1.0.0"
   },
