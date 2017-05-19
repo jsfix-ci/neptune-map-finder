@@ -1,11 +1,12 @@
 {
   "name": "neptune-map-finder",
-  "version": "0.1.0",
+  "version": "1.0.3",
   "private": true,
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
+  "main": "src/index",
   "devDependencies": {
     "react-scripts": "1.0.0"
   },
