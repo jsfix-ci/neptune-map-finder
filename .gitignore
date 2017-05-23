@@ -1,4 +1,6 @@
-node_modules
+.idea
 .DS_Store
-npm-debug.log
-.idea/
+examples/__build__/
+node_modules/
+tmp/
+dist/
