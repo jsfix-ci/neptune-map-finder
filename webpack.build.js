@@ -7,7 +7,7 @@ module.exports = {
     filename: 'index.js',
     path: 'dist/',
     libraryTarget: 'commonjs2',
-    library: 'react-modal-wrapper'
+    library: 'neptune-map-finder'
   },
   externals: {
     'react': 'react',

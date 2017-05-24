@@ -1,19 +1,19 @@
-# react-modal-wrapper
+# neptune-map-finder
 
 A React Modal Wrapper that uses FlexBox to keep it's position, BYOM (bring-your-own-modal). Based off the [Portal component](https://github.com/tajo/react-portal) by [Tajo](https://github.com/tajo).
 **Note:** This uses flexbox so browser support is iffy. Will post a compatibility table at some point.
 
 ## Installation
 ```
-npm install react-modal-wrapper --save
+npm install neptune-map-finder --save
 ```
 
 ## Usage
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
-import FlexModalWrapper from 'react-modal-wrapper';
-import 'react-modal-wrapper/dist/main.css'; // to load default styles
+import FlexModalWrapper from 'neptune-map-finder';
+import 'neptune-map-finder/dist/main.css'; // to load default styles
 
 const Modal = React.createClass({
   render() {

@@ -1,2 +1,2 @@
-import FlexModalWrapper from './lib/FlexModalWrapper';
-module.exports = FlexModalWrapper;
+import MapFinderPageComponent from './src/components/map-finder/map-finder-page-component';
+module.exports = MapFinderPageComponent;
