@@ -30,9 +30,19 @@ export default class MapFinderPageComponent extends Component {
     }
 
     componentDidMount() {
-        //
+
         let that = this;
         let url = 'https://mapfinder-staging.herokuapp.com/mapfinder/postcode?postcode=30&sport=baseball&orderby=dis';
+
+url = 'http://128.199.90.210:8083/team/a0Rp0000004AIsVEAW';
+        // const options = {
+        //     url: url,
+        //     headers: {
+        //         'Authorization': "Basic ZGV2OmRldjIwMTY=",
+        //         "X_API_KEY": "XrVL2DyqsA3hIF3oIfbQU7bAF7EtfRSH1ln6RL22",
+        //
+        //     }
+        // };
 
         fetch(url)
             .then(function(response) {
@@ -45,6 +55,7 @@ export default class MapFinderPageComponent extends Component {
                 console.log("=====data:", data);
 
             });
+
     }
 
     componentWillUnmount(){
