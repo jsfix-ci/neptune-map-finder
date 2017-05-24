@@ -1,13 +1,5 @@
 .idea
 .DS_Store
-<<<<<<< HEAD
 examples/__build__/
 node_modules/
 tmp/
-dist/
-=======
-npm-debug.log
-.idea/
-build/
-
->>>>>>> e4dd4f87c4865cb9587ca244d4506e2ee261039f

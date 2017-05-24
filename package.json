@@ -1,6 +1,6 @@
 {
   "name": "neptune-map-finder",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "A React Modal Wrapper that uses FlexBox to keep it's position, BYOM (bring-your-own-modal)",
   "main": "dist/index.js",
   "scripts": {
