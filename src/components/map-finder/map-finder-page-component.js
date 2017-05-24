@@ -32,7 +32,7 @@ export default class MapFinderPageComponent extends Component {
     componentDidMount() {
         //
         let that = this;
-        let url = 'http://128.199.90.210:8083/team/a0Rp0000004AIsVEAW';
+        let url = 'https://mapfinder-staging.herokuapp.com/mapfinder/postcode?postcode=30&sport=baseball&orderby=dis';
 
         fetch(url)
             .then(function(response) {
