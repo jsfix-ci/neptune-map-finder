@@ -22,7 +22,7 @@ export default class MapFinderPageComponent extends Component {
             resultData:null,
             searchStatus:'',
             isSearching:false,
-
+            person: null
         };
         this.searchStatus = '';
         this.onSearchStatus = this.onSearchStatus.bind(this);
@@ -30,7 +30,21 @@ export default class MapFinderPageComponent extends Component {
     }
 
     componentDidMount() {
+        //
+        let that = this;
+        let url = 'http://128.199.90.210:8083/team/a0Rp0000004AIsVEAW';
 
+        fetch(url)
+            .then(function(response) {
+                if (response.status >= 400) {
+                    throw new Error("Bad response from server");
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log("=====data:", data);
+
+            });
     }
 
     componentWillUnmount(){
@@ -81,6 +95,7 @@ export default class MapFinderPageComponent extends Component {
                         </p>
                     </div>
                 </div>
+                <div>{this.state.person}</div>
                 <SearchFilterComponent
                     onSearchClick   = {(data)=> this.setState({resultData:data}) }
                     onSearchStatus  = {(dataObject)=> this.onSearchStatus(dataObject)}
